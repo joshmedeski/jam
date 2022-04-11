@@ -1,10 +1,11 @@
-import React from "react";
-
 import {
-  FontAwesomeIcon,
-  FontAwesomeIconProps,
-} from "@fortawesome/react-fontawesome";
-
+  faGithubAlt,
+  faInstagram,
+  faLinkedin,
+  faTwitch,
+  faTwitter,
+  faYoutube,
+} from "@fortawesome/free-brands-svg-icons";
 import {
   faAlbumCollection,
   faBooks,
@@ -27,15 +28,11 @@ import {
   faSunset,
   faTypewriter,
 } from "@fortawesome/pro-duotone-svg-icons";
-
 import {
-  faGithubAlt,
-  faInstagram,
-  faLinkedin,
-  faTwitch,
-  faTwitter,
-  faYoutube,
-} from "@fortawesome/free-brands-svg-icons";
+  FontAwesomeIcon,
+  FontAwesomeIconProps,
+} from "@fortawesome/react-fontawesome";
+import React from "react";
 
 type IconProps = { className: string };
 

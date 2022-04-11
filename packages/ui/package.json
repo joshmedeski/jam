@@ -2,7 +2,7 @@
   "name": "ui",
   "version": "0.0.0",
   "main": "./index.tsx",
-  "types": "./index.tsx",
+  "types": "./index.d.ts",
   "license": "MIT",
   "scripts": {
     "dev": "concurrently \"npm run serve\" \"npm run build -- --watch\"",

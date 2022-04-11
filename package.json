@@ -1,6 +1,6 @@
 {
-  "name": "turborepo-basic-shared",
-  "version": "0.0.0",
+  "name": "jam",
+  "version": "1.0.0",
   "private": true,
   "workspaces": [
     "apps/*",
@@ -10,7 +10,7 @@
     "build": "turbo run build",
     "dev": "turbo run dev --parallel",
     "lint": "turbo run lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\""
+    "format": "prettier --write \"**/*.{ts,tsx,md,mdx,yml,yaml,js,json}\""
   },
   "devDependencies": {
     "prettier": "^2.5.1",
@@ -22,4 +22,3 @@
   },
   "packageManager": "yarn@1.22.15"
 }
-
