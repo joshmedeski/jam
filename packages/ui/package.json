@@ -1,0 +1,31 @@
+{
+  "name": "ui",
+  "version": "0.0.0",
+  "main": "./index.tsx",
+  "types": "./index.tsx",
+  "license": "MIT",
+  "scripts": {
+    "dev": "concurrently \"npm run serve\" \"npm run build -- --watch\"",
+    "build": "npx tailwindcss -i ./input.css -o ./styles.css --minify",
+    "serve": "ladle serve"
+  },
+  "devDependencies": {
+    "@types/react": "^17.0.37",
+    "@types/react-dom": "^17.0.11",
+    "concurrently": "^7.1.0",
+    "config": "*",
+    "tailwindcss": "^3.0.23",
+    "tsconfig": "*",
+    "typescript": "^4.5.3"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^6.1.1",
+    "@fortawesome/free-brands-svg-icons": "^6.1.1",
+    "@fortawesome/free-regular-svg-icons": "^6.1.1",
+    "@fortawesome/free-solid-svg-icons": "^6.1.1",
+    "@fortawesome/pro-duotone-svg-icons": "^6.1.1",
+    "@fortawesome/react-fontawesome": "^0.1.18",
+    "@ladle/react": "^0.11.0",
+    "clsx": "^1.1.1"
+  }
+}

@@ -1,0 +1,178 @@
+---
+title: How to Install Fathom Analytics in NextJS
+published_on: '2021-11-16T10:00:00.000Z'
+updated_on: '2021-11-16T10:00:00.000Z'
+thumbnail: 'how-to-install-fathom-analytics-in-nextjs-thumbnail.jpg'
+description:
+  We are going to install Fathom Analytics into a NextJS app using environmental
+  variables and a React hook.
+categories: ['development']
+---
+
+[Fathom Analytics](https://usefathom.com/ref/BZDSCB) makes "website analytics
+that doesn't suck". It's a great alternative to Google Analyitcs. It is not
+free, but they are focused on privacy and have built a great dashboard and
+support for all kinds of platforms.
+
+<Img
+  src="/images/posts/how-to-install-fathom-analytics-in-nextjs/fathom-dashboard.jpg"
+  alt="Fathom Analytics dashboard"
+  width={1000}
+  height={618}
+/>
+
+In this article, we are going to install Fathom Analytics into a NextJS app
+using environmental variables and a React hook.
+
+## Create environmental variables
+
+Go to `.env.local` and add environmental variables so that your personal
+information related to Fathom isn't put into version control. Make sure to add
+`.env.local` to your `.gitignore` if you haven't already.
+
+```sh
+NEXT_PUBLIC_FATHOM_SITE_ID=""
+NEXT_PUBLIC_FATHOM_INCLUDED_DOMAINS="" # comma separate values
+NEXT_PUBLIC_FATHOM_EXCLUDED_DOMAINS="" # comma separate values
+```
+
+<Note>
+  In order to expose a variable to the browser you have to prefix the variable
+  with <code>NEXT_PUBLIC_</code> see{' '}
+  <a
+    href="https://nextjs.org/docs/basic-features/environment-variables"
+    rel="nofollow"
+  >
+    NextJS environment variables documentation
+  </a>
+  .
+</Note>
+
+## Add TypeScript definition
+
+NextJS recommends adding additional TypeScript definitions to a file called
+`additional.d.ts` in the root of the project. To add NodeJS process events, add
+the following code that matches your environmental variables from the previous
+step.
+
+```ts
+declare namespace NodeJS {
+  interface ProcessEnv {
+    NEXT_PUBLIC_FATHOM_SITE_ID: string
+    NEXT_PUBLIC_FATHOM_INCLUDED_DOMAINS: string
+    NEXT_PUBLIC_FATHOM_EXCLUDED_DOMAINS: string
+  }
+}
+```
+
+Make sure to add `additional.d.ts` to your `tsconfig.json`
+
+```json
+{
+  "include": ["next-env.d.ts", "additional.d.ts", "**/*.ts", "**/*.tsx"]
+}
+```
+
+## Install fathom-client npm package
+
+Install the
+[fathom-client npm package](https://www.npmjs.com/package/fathom-client) by
+running the following command.
+
+```sh
+npm install fathom-client
+```
+
+Or, if you use [Yarn](https://yarnpkg.com) as your package manager, run the
+command below.
+
+```sh
+yarn add fathom-client
+```
+
+## Write React hook to load Fathom Analytics
+
+Next (pun intended), I want to write a custom hook that holds all of the logic
+for loading and tracking page view for the NextJS app.
+
+Here are the requirements for our React hook:
+
+1. Only run on production
+1. Pull environmental variables
+1. Load Fathom with site IDs and available domain data
+1. Send page views to Fathom
+
+```ts
+import { LoadOptions, load, trackPageview } from 'fathom-client'
+import { useRouter } from 'next/router'
+import { useEffect } from 'react'
+
+/**
+ * React hook for Fathom Analytics router event tracking
+ */
+const useFathomAnalytics = () => {
+  const { events } = useRouter()
+  const nodeEnv = process.env.NODE_ENV
+  const eventType = 'routeChangeComplete'
+  const siteId = process.env.NEXT_PUBLIC_FATHOM_SITE_ID
+  const excludedDomains = process.env.NEXT_PUBLIC_FATHOM_EXCLUDED_DOMAINS
+  const includedDomains = process.env.NEXT_PUBLIC_FATHOM_INCLUDED_DOMAINS
+
+  useEffect(() => {
+    if (nodeEnv !== 'production' || !siteId) return
+    let loadOptions: LoadOptions = {}
+
+    if (includedDomains.length) {
+      loadOptions.includedDomains = includedDomains.split(',')
+    }
+
+    if (excludedDomains.length) {
+      loadOptions.excludedDomains = excludedDomains.split(',')
+    }
+
+    load(siteId, loadOptions)
+    events.on(eventType, trackPageview)
+
+    return () => events.off(eventType, trackPageview)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  return {}
+}
+
+export default useFathomAnalytics
+```
+
+## Call hook on the NextJS `_app.ts`
+
+Finally, you can call the `useFathomAnalytics` hook to the main `_app.ts` file.
+
+```ts
+import type { AppProps } from 'next/app'
+import React from 'react'
+
+import useFathomAnalytics from '@/utils/useFathomAnalytics'
+
+const App: React.FC<AppProps> = ({ Component, pageProps }) => {
+  useFathomAnalytics()
+
+  return <Component {...pageProps} />
+}
+
+export default App
+```
+
+## Setup Deployment
+
+Make sure to set the environmental variables on your production server. I'm
+using [Vercel](https://vercel.com) to deploy my website, so I go to the site's
+settings and make sure to add all the variables from the fist step of this
+article.
+
+## Final Thoughts
+
+Now you have Fathom Analytics installed on your NextJS application! Your Fathom
+dashboard will begin to populate data and give you insight as to your product's
+traffic. In this article, we put the Fathom related data in environmental
+variables, loaded them with type safety, and abstracted page tracking logic into
+a react hook.
