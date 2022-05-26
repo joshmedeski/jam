@@ -1,0 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .prose img {
+    @apply mt-0 mb-4 !important;
+  }
+}
