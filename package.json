@@ -1,7 +1,6 @@
 {
   "name": "jam",
-  "description": "monorepo for Josh A Medeski (jam)",
-  "version": "1.0.0",
+  "description": "Monorepo for Josh Medeski",
   "private": true,
   "workspaces": [
     "apps/*",
@@ -10,16 +9,17 @@
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev --parallel",
+    "format": "prettier --write \"**/*.{ts,tsx,md,mdx,yml,yaml,js,json}\"",
     "lint": "turbo run lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md,mdx,yml,yaml,js,json}\""
+    "ui": "yarn turbo run dev --scope=@jam/ui"
   },
   "devDependencies": {
     "prettier": "^2.5.1",
-    "turbo": "latest"
+    "turbo": "^1.1.10"
   },
   "engines": {
-    "npm": ">=7.0.0",
-    "node": ">=14.0.0"
+    "node": ">=16.0.0"
   },
-  "packageManager": "yarn@1.22.15"
+  "packageManager": "yarn@1.22.15",
+  "version": "1.0.0"
 }
