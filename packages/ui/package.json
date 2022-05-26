@@ -1,8 +1,8 @@
 {
-  "name": "ui",
+  "name": "@jam/ui",
   "version": "0.0.0",
   "main": "./index.tsx",
-  "types": "./index.d.ts",
+  "types": "./index.tsx",
   "license": "MIT",
   "scripts": {
     "dev": "concurrently \"npm run serve\" \"npm run build -- --watch\"",

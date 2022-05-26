@@ -1,5 +1,6 @@
 {
   "name": "jam",
+  "description": "monorepo for Josh A Medeski (jam)",
   "version": "1.0.0",
   "private": true,
   "workspaces": [

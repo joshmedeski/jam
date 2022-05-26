@@ -1,5 +1,5 @@
 {
-  "name": "remix-template-vercel",
+  "name": "web-remix",
   "private": true,
   "version": "1.0.0",
   "description": "",
@@ -15,7 +15,8 @@
     "@remix-run/vercel": "^1.3.5",
     "@vercel/node": "^1.14.0",
     "react": "^17.0.2",
-    "react-dom": "^17.0.2"
+    "react-dom": "^17.0.2",
+    "ui": "*"
   },
   "devDependencies": {
     "@remix-run/dev": "^1.3.5",
